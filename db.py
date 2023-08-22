@@ -121,13 +121,17 @@ def delete(table_name,value):
         elif CONN_STRING is not None:
             CONN_STRING.close()
 
-def read(table_name,value):
+def read(table_name,value,mod):
     try:
         CONN_STRING=psycopg.connect("dbname=tareas user=postgres password= host=localhost")
         print("Conexion exitosa")
         cur=CONN_STRING.cursor()
-        cur.execute(f"SELECT * FROM {table_name} WHERE id={value}")
-        print(cur.fetchone())
+        if mod==1:
+            cur.execute(f"SELECT * FROM {table_name} WHERE id={value}")
+            print(cur.fetchone())
+        elif mod==2:
+            cur.execute(f"SELECT * FROM ToDo WHERE Estado={value}")
+            print(cur.fetchall())
     except Exception as error:
         print (error)
         print("hubo un error")
@@ -144,7 +148,7 @@ def read(table_name,value):
 #values_ToDo=("Titulo, Descripcion,Estado")
 #values_autor=("Nombre, Apellido_P, Apellido_M, Correo_electronico, contraseña")
 
-#insert(("ToDo"),[("Practica1","trabajo de postgres",True)],(values_ToDo),1)
+#insert(("ToDo"),[("Practica3","Examen final",True)],(values_ToDo),1)
 #insert(("Autor"),[("Erwin","Romel","Guderian","guerra_relampago@hotmail.com","123")],(values_autor),2)
 
 
@@ -154,5 +158,6 @@ def read(table_name,value):
 
 #delete("ToDo","3")
 
-#read("ToDo","1")
-read("Autor","3")
+#read("ToDo","1",1)
+#read("Autor","3",1)
+read("ToDo",True,2)
